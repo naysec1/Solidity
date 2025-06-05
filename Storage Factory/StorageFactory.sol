@@ -1,83 +1,27 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-contract SimpleStorage {
-    uint256 myFavoriteNumber;
-
-    struct Person {
-        uint256 favoriteNumber;
-        string name;
-    }
-    // uint256[] public anArray;
-    Person[] public listOfPeople;
-
-    mapping(string => uint256) public nameToFavoriteNumber;
-
-    function store(uint256 _favoriteNumber) public virtual {
-        myFavoriteNumber = _favoriteNumber;
-    }
-
-    function retrieve() public view returns (uint256) {
-        return myFavoriteNumber;
-    }
-
-    function addPerson(string memory _name, uint256 _favoriteNumber) public {
-        listOfPeople.push(Person(_favoriteNumber, _name));
-        nameToFavoriteNumber[_name] = _favoriteNumber;
-    }
-}
+import {SimpleStorage} from "./Simple.sol";
 
 contract StorageFactory {
 
-    SimpleStorage public simpleStorage;
+    SimpleStorage[] public simpleArray;
+    uint[] storeNum;
 
-    constructor() {
-        simpleStorage = new SimpleStorage();
+    function createStorage(uint _index) public returns (SimpleStorage){
+        SimpleStorage simpleStorage = new SimpleStorage();
+        simpleArray.push(simpleStorage);
+        return simpleArray[_index];
     }
 
-    function CreateSimpleStorage() public {
+    function sfStore(uint _index, uint _favoriteNumber) public  {
+        SimpleStorage simpleStorage = simpleArray[_index];
+        simpleStorage.store(_favoriteNumber);
+    }
     
+    function retrieve(uint _index) public view returns (uint) {
+        SimpleStorage simpleStorage = simpleArray[_index];
+        return simpleStorage.retrieve();
     }
+
 }
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
-
-contract SimpleStorage {
-    uint256 myFavoriteNumber;
-
-    struct Person {
-        uint256 favoriteNumber;
-        string name;
-    }
-    // uint256[] public anArray;
-    Person[] public listOfPeople;
-
-    mapping(string => uint256) public nameToFavoriteNumber;
-
-    function store(uint256 _favoriteNumber) public virtual {
-        myFavoriteNumber = _favoriteNumber;
-    }
-
-    function retrieve() public view returns (uint256) {
-        return myFavoriteNumber;
-    }
-
-    function addPerson(string memory _name, uint256 _favoriteNumber) public {
-        listOfPeople.push(Person(_favoriteNumber, _name));
-        nameToFavoriteNumber[_name] = _favoriteNumber;
-    }
-}
-
-contract StorageFactory {
-
-    SimpleStorage public simpleStorage;
-
-    constructor() {
-        simpleStorage = new SimpleStorage();
-    }
-
-    function CreateSimpleStorage() public {
-    
-    }
-}
-
